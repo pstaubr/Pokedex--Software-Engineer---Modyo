@@ -4,6 +4,7 @@
 2. [Operaciones](/readme.md#2-operaciones)
 3. [Especificación Técnica](/readme.md#3-especificaci%C3%B3n-t%C3%A9cnica)
 4. [Dependencias](/readme.md#4-ejecuci%C3%B3n)
+5. [Datos de prueba](/readme.md#4-ejecuci%C3%B3n)
 
 ## 1. Propiedad
 
@@ -50,7 +51,12 @@ No aplica.
 
 ### 4.3. Backends
 
-LDAP COAS
+Api pokedex
+
+## 5. Datos de prueba
+
+Swagger:
+http://localhost:6201/swagger-ui/index.html
 
 ### 5.1. Configuraciones
 
