@@ -1,0 +1,23 @@
+# Service configuration
+# You can configure the service exposure here
+# be-serviceName for BackEnd, bff-serviceName for BackendForFrontend, dal-serviceName for Data Abstraction Layer
+apiVersion: v1
+kind: Service
+metadata:
+  # Normal service name
+  name: ms-modyo-desafio-pokedex-svc
+spec:
+  ports:
+    - port: 80
+      # 8080 normal service, 8081 service with endpoints
+      targetPort: 6201
+      protocol: TCP
+  selector:
+    # Normal service name and tier
+    app: ms-modyo-desafio-pokedex
+    # backend, frontend
+    tier: backend
+  # LOCAL/INTERNAL: NodePort, GCP/EXTERNAL: LoadBalancer
+  type: NodePort
+  # ClusterIP: exposicion por IP local dentro del cluster, para consumo interno
+  # NodePort: exposición del servicio hacia fuera (pendiente de configuracion adicional)

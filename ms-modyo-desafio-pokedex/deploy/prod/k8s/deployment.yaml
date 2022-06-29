@@ -1,0 +1,71 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: ms-modyo-desafio-pokedex-env-sa
+  labels:
+    account: ms-modyo-desafio-pokedex-env
+---
+
+# POD - API configuration (with SQL Proxy)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  # Normal service name
+  name: ms-modyo-desafio-pokedex
+spec:
+  # Number of replicas (default value 1)
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ms-modyo-desafio-pokedex
+  template:
+    metadata:
+      labels:
+        # Normal service name and tier (same selectors as the service configuration)
+        app: ms-modyo-desafio-pokedex
+        tier: backend
+      annotations:
+        sidecar.istio.io/rewriteAppHTTPProbers: "true"
+    spec:
+      containers:
+        #---------------------------------------- [CONTAINER: oms-srv-dal-order]  -------------------------------#
+        # Normal service name
+        - name: ms-modyo-desafio-pokedex
+          # Change to your project image (from registry)
+          image: gcr.io/{GCP_PROJECT_ID}/{CI_PROJECT_NAME}:{IMAGE_TAG}
+          # Always download the image from registry (dev utility)
+          imagePullPolicy: Always
+          env:
+            - name: SYSTEM_LDAP_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: ldap-credentials
+                  key: password
+          #---------------------------------------- [ENV SYSTEM CONFIGURATION]  -------------------------------#
+          envFrom:
+            - configMapRef:
+                name: ms-modyo-desafio-pokedex-env
+          #---------------------------------------- [configuration port]  -------------------------------#
+          ports:
+            - name: appsc-rg
+              containerPort: 6201
+              protocol: TCP
+
+          #---------------------------------------- [Readiness Configuration] -------------------------------#
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 6201
+            initialDelaySeconds: 40
+            timeoutSeconds: 2
+            periodSeconds: 3
+            failureThreshold: 2
+          #---------------------------------------- [Liveness Configuration] -------------------------------#
+          livenessProbe:
+            httpGet:
+              path: /modyo-poke-dex/v1/liveness
+              port: 6201
+            initialDelaySeconds: 100
+            timeoutSeconds: 2
+            periodSeconds: 8
+            failureThreshold: 1

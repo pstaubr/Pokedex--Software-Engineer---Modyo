@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+    <springProfile name="default">
+        <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+        <appender name="FILE-ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>app-local.log</file>
+            <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                <fileNamePattern>app-local-%d{yyyy-MM-dd}_%i.log</fileNamePattern>
+                <maxFileSize>10MB</maxFileSize>
+                <totalSizeCap>500MB</totalSizeCap>
+                <maxHistory>7</maxHistory>
+            </rollingPolicy>
+            <encoder>
+                <pattern>%d %p %c{1.} [%t] %m%n</pattern>
+            </encoder>
+        </appender>
+        <root level="info">
+            <appender-ref ref="FILE-ROLLING"/>
+            <appender-ref ref="CONSOLE"/>
+        </root>
+    </springProfile>
+
+    <springProfile name="stackdriver">
+        <appender name="CLOUD" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>%-5level %logger.%M %msg%n</pattern>
+            </encoder>
+        </appender>
+        <root level="info">
+            <appender-ref ref="CLOUD"/>
+        </root>
+    </springProfile>
+
+    <!-- Se necesitan permisos en cuenta de servicio para maxima compatibilidad
+    <springProfile name="stackdriver">
+        <appender name="CLOUD" class="com.google.cloud.logging.logback.LoggingAppender">
+        </appender>
+        <root level="info">
+            <appender-ref ref="CLOUD"/>
+        </root>
+    </springProfile>
+    -->
+</configuration>

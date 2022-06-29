@@ -1,0 +1,20 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: ms-modyo-desafio-pokedex-vs
+spec:
+  hosts:
+    - "*"
+  gateways:
+    - ms-modyo-desafio-pokedex-gtw
+  http:
+    - match:
+        - uri:
+            prefix: /modyo-poke-dex/v1/pokedex/{name}
+        - uri:
+            prefix: /modyo-poke-dex/v1/liveness
+      route:
+        - destination:
+            port:
+              number: 80
+            host: ms-modyo-desafio-pokedex-svc

@@ -1,0 +1,21 @@
+## MASKING ENVIRONMENT
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ms-modyo-desafio-pokedex-env
+  labels:
+    name: ms-modyo-desafio-pokedex-env
+data:
+  #[KEY-CONFIG-MAP]: [VALUE]
+  #---------------------------------------------- DAL service  ----------------------------------#
+
+  #---------------------------------------- System Configuration  -------------------------------#
+  ENDPOINT_API_POKEDEX: 'https://pokeapi.co/api/v2'
+  SYS_LOGGING_LEVEL: 'info'
+  SYS_LOGGING_DB_LEVEL: 'error'
+  SYS_LOGGING_CONFIG: 'stackdriver'
+  SERVICE_PORT: '6201'
+  DISABLE_SWAGGER: 'false'
+  DISABLE_DOCS_SWAGGER: 'false'
+#----------------------------------------------------------------------------------------------#
+#----------------------------------------------------------------------------------------------#
