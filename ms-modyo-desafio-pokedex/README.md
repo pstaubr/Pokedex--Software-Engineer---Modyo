@@ -58,6 +58,9 @@ Api pokedex
 Swagger:
 http://localhost:6201/swagger-ui/index.html
 
+CurL:
+curl --location --request GET 'http://localhost:6201/pokedex/1'
+
 ### 5.1. Configuraciones
 
 Detalla las configuraciones necesarias para que el microservicio pueda operar:
